@@ -32,5 +32,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
+          file: DockerfileFull
           push: true
           tags: npflan/g5v:${{ steps.date.outputs.date }}
