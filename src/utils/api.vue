@@ -863,6 +863,20 @@ export default {
       }
       return message;
     },
+    async ResendMatchConfig(matchid) {
+      let res;
+      let message;
+      try {
+        res = await this.axioCall.get(
+          `${process.env?.VUE_APP_G5V_API_URL ||
+            "/api"}/matches/${matchid}/resendConfig`
+        );
+        message = res.data.message;
+      } catch (error) {
+        message = error.response.data.message;
+      }
+      return message;
+    },
     async AddUserToSpectator(matchid, matchObject) {
       let res;
       let message;

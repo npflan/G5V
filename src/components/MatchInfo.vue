@@ -90,6 +90,12 @@
           matchInfo.end_time == null
       "
     >
+      <input
+        name="server_ip_port_info"
+        type="input"
+        onClick="this.select()"
+        :value="serverInfo.ip_port"
+      /><br />
       <v-btn
         color="primary"
         small
@@ -175,7 +181,8 @@ export default {
       serverInfo: {
         ip_string: "",
         port: 0,
-        gotv_port: 0
+        gotv_port: 0,
+        ip_port: ""
       },
       apiUrl: process.env?.VUE_APP_G5V_API_URL || "/api"
     };
@@ -221,6 +228,7 @@ export default {
           this.serverInfo.ip_string = serveRes.ip_string;
           this.serverInfo.port = serveRes.port;
           this.serverInfo.gotv_port = serveRes.gotv_port;
+          this.serverInfo.ip_port = serveRes.ip_string + ":" + serveRes.port;
         }
       } catch (error) {
         console.log(error);

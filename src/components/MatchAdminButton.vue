@@ -68,6 +68,24 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="resendDialog" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">
+            This feature is kind of experimental, good luck!
+          </span>
+        </v-card-title>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="resendDialog = false">
+            {{ $t("misc.No") }}
+          </v-btn>
+          <v-btn color="red darken-1" text @click="resendCurrentMatchConfig()">
+            {{ $t("misc.Yes") }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-dialog v-model="addDialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
@@ -307,6 +325,7 @@ export default {
       response: "",
       responseSheet: false,
       cancelDialog: false,
+      resendDialog: false,
       addDialog: false,
       forfeitDialog: false,
       rconDialog: false,
@@ -362,6 +381,12 @@ export default {
           title: this.$t("MatchAdmin.CancelMatch"),
           apiCall: () => {
             this.cancelDialog = true;
+          }
+        },
+        {
+          title: this.$t("MatchAdmin.ResendMatchConfig"),
+          apiCall: () => {
+            this.resendDialog = true;
           }
         },
         {
@@ -429,6 +454,12 @@ export default {
           }
         },
         {
+          title: this.$t("MatchAdmin.ResendMatchConfig"),
+          apiCall: () => {
+            this.resendDialog = true;
+          }
+        },
+        {
           title: this.$t("MatchAdmin.ForfeitMatch"),
           apiCall: () => {
             this.forfeitDialog = true;
@@ -488,6 +519,15 @@ export default {
     async cancelCurrentMatch() {
       this.isLoading = true;
       let matchRes = await this.CancelMatch(this.matchInfo.id);
+      this.response = matchRes;
+      this.cancelDialog = false;
+      this.isLoading = false;
+      this.responseSheet = true;
+      return;
+    },
+    async resendCurrentMatchConfig() {
+      this.isLoading = true;
+      let matchRes = await this.ResendMatchConfig(this.matchInfo.id);
       this.response = matchRes;
       this.cancelDialog = false;
       this.isLoading = false;
